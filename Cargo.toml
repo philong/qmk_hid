@@ -1,7 +1,7 @@
 [package]
 name = "qmk_hid"
-version = "0.1.12"
-edition = "2021"
+version = "0.1.13"
+edition = "2024"
 license = "BSD-3-Clause"
 description = "Commandline tool to interact with QMK devices via their raw HID interface"
 authors = ["Daniel Schaefer <dhs@frame.work>"]
@@ -10,9 +10,7 @@ repository = "https://github.com/FrameworkComputer/qmk_hid"
 
 [dependencies]
 clap = { version = "4.5", features = ["derive"] }
-# hidapi 2.6.2 needs nightly
-# See: https://github.com/ruabmbua/hidapi-rs/pull/158
-hidapi = { version = "=2.6.1" }
+hidapi = { version = "=2.6.4" }
 
 [build-dependencies]
-static_vcruntime = "2.0"
+static_vcruntime = "3.0"
