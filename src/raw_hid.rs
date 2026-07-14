@@ -4,9 +4,9 @@ use hidapi::HidDevice;
 
 use crate::QmkError;
 
-// ChibiOS won't respond if we send 32.
-// Currently I hardcoded it to ignore. But in upstream QMK/ChibiOS we have to send 33 bytes.
-// See raw_hid_send in tmk_core/protocol/chibios/usb_main.c
+// Upstream QMK/ChibiOS requires the full RAW_EPSIZE (32) bytes to arrive,
+// so we must write 33 bytes: 1 report ID + 32 payload.
+// See raw_hid_task/receive_report in tmk_core/protocol/chibios/usb_main.c
 pub const RAW_HID_BUFFER_SIZE: usize = 32;
 
 pub const RAW_USAGE_PAGE: u16 = 0xFF60;
@@ -22,7 +22,7 @@ pub fn send_message(
     out_len: usize,
 ) -> Result<Vec<u8>, QmkError> {
     // TODO: Why fill the rest with 0xFE? hidapitester uses 0x00
-    let mut data = vec![0xFE; RAW_HID_BUFFER_SIZE];
+    let mut data = vec![0xFE; RAW_HID_BUFFER_SIZE + 1];
     data[0] = 0x00; // NULL report ID
     data[1] = message_id;
 
